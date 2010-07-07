@@ -3,6 +3,17 @@
 
 from sys import exit
 
+import ConfigParser
+
+config = ConfigParser.ConfigParser()
+config.read('loader.cfg')
+
+user = config.get("Oracle", "user")
+password = config.get("Oracle", "password")
+server = config.get("Oracle", "server")
+port = config.get("Oracle", "port")
+instance = config.get("Oracle", "instance")
+
 try:
     import cx_Oracle
 except ImportError, info:
@@ -15,7 +26,7 @@ if cx_Oracle.version < '3.0':
 
 try:
     print "Connecting to Mobisky.."
-    my_connection = cx_Oracle.connect('cms/cms@//serverIP:port/orcl')
+    my_connection = cx_Oracle.connect(user + '/' + password + '@//' + server + ':' + port + '/' +instance)
 except cx_Oracle.DatabaseError, info:
     print "Logon Error:", info
     exit(0)
