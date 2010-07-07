@@ -5,7 +5,7 @@ from sys import exit
 
 try:
     import cx_Oracle
-except ImportError,info:
+except ImportError, info:
     print "Import Error:", info
     sys.exit()
 
@@ -14,9 +14,10 @@ if cx_Oracle.version < '3.0':
     sys.exit()
 
 try:
-    my_connection=cx_Oracle.connect('system/manager@test_db')
+    print "Connecting to Mobisky.."
+    my_connection = cx_Oracle.connect('cms/cms@//mobisky_host/orcl')
 except cx_Oracle.DatabaseError, info:
-    print "Logon  Error:", info
+    print "Logon Error:", info
     exit(0)
 
 my_cursor = my_connection.cursor()
@@ -31,7 +32,7 @@ try:
       FROM DBA_EXTENTS
      WHERE OWNER LIKE :S
      GROUP BY OWNER, SEGMENT_TYPE, TABLESPACE_NAME
-    """, S='SYS%')
+    """, S = 'SYS%')
 except cx_Oracle.DatabaseError, info:
     print "SQL Error:", info
     exit(0)
@@ -47,15 +48,13 @@ title_mask = ('%-16s','%-16s','%-16s','%-8s','%-8s')
 i = 0
 
 for column_description in my_cursor.description:
-    print title_mask[i]%column_description[0],
+    print title_mask[i] % column_description[0],
     i = 1 + i
 
 print ''
 print "------------------------------------------------------------"
 
-row_mask='%-16s %-16s %-16s %8.0f %8.0f '
+row_mask = '%-16s %-16s %-16s %8.0f %8.0f '
 
 for record in my_cursor.fetchall():
-    print row_mask%record
-
-
+    print row_mask % record
