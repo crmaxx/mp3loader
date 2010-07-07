@@ -4,3 +4,7 @@ password = test
 server = 127.0.0.1
 port = 1521
 instance = XE
+
+[mp3]
+path_from = /path/to/upload
+path_to = /path/to/download
