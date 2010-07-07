@@ -6,16 +6,16 @@ from sys import exit
 try:
     import cx_Oracle
 except ImportError, info:
-    print "Import Error:", info
+    print "Import Error: ", info
     sys.exit()
 
 if cx_Oracle.version < '3.0':
-    print "Very old version of cx_Oracle :", cx_Oracle.version
+    print "Very old version of cx_Oracle: ", cx_Oracle.version
     sys.exit()
 
 try:
     print "Connecting to Mobisky.."
-    my_connection = cx_Oracle.connect('cms/cms@//mobisky_host/orcl')
+    my_connection = cx_Oracle.connect('cms/cms@//serverIP:port/orcl')
 except cx_Oracle.DatabaseError, info:
     print "Logon Error:", info
     exit(0)
@@ -43,7 +43,7 @@ print
 print "Used space by owner, object type, tablespace "
 print "-----------------------------------------------------------"
 
-title_mask = ('%-16s','%-16s','%-16s','%-8s','%-8s')
+title_mask = ('%-16s', '%-16s', '%-16s', '%-8s', '%-8s')
 
 i = 0
 
