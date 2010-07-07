@@ -1,0 +1,6 @@
+[Oracle]
+user = test
+password = test
+server = 127.0.0.1
+port = 1521
+instance = XE
