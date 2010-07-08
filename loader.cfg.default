@@ -8,3 +8,8 @@ instance = XE
 [mp3]
 path_from = /path/to/upload
 path_to = /path/to/download
+
+[Logs]
+level = Debug
+filename = loader.log
+format = %(asctime)s - %(levelname)s - %(message)s
