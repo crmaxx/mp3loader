@@ -1,9 +1,15 @@
 #!/usr/bin/python
 # -*- coding: utf8 -*-
 
-from sys import exit
-
+import sys
 import ConfigParser
+import logging
+
+LEVELS = {'debug': logging.DEBUG,
+          'info': logging.INFO,
+          'warning': logging.WARNING,
+          'error': logging.ERROR,
+          'critical': logging.CRITICAL}
 
 config = ConfigParser.ConfigParser()
 config.read('loader.cfg')
@@ -13,6 +19,13 @@ password = config.get("Oracle", "password")
 server = config.get("Oracle", "server")
 port = config.get("Oracle", "port")
 instance = config.get("Oracle", "instance")
+
+level_name = config.get("Logs", "level")
+level = LEVELS.get(level_name, logging.NOTSET)
+logging.basicConfig(level = level,
+		    format = config.get("Logs","format"),
+		    filename = config.get("Logs","filename"),
+		    filemode = 'w')
 
 try:
     import cx_Oracle
