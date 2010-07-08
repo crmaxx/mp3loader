@@ -23,25 +23,31 @@ instance = config.get("Oracle", "instance")
 level_name = config.get("Logs", "level")
 level = LEVELS.get(level_name, logging.NOTSET)
 logging.basicConfig(level = level,
-		    format = config.get("Logs","format"),
-		    filename = config.get("Logs","filename"),
+		    format = config.get("Logs", "format", 1),
+		    filename = config.get("Logs", "filename"),
 		    filemode = 'w')
+
+logger = logging.getLogger('main')
 
 try:
     import cx_Oracle
 except ImportError, info:
     print "Import Error: ", info
+    logger.critical("Import Error: %s", info)
     sys.exit()
 
 if cx_Oracle.version < '3.0':
     print "Very old version of cx_Oracle: ", cx_Oracle.version
+    logger.critical("Very old version of cx_Oracle: %s", cx_Oracle.version)
     sys.exit()
 
 try:
     print "Connecting to Mobisky.."
+    logger.info("Connecting to Mobisky..")
     my_connection = cx_Oracle.connect(user + '/' + password + '@//' + server + ':' + port + '/' +instance)
 except cx_Oracle.DatabaseError, info:
     print "Logon Error:", info
+    logger.error("Logon Error: %s", info)
     exit(0)
 
 my_cursor = my_connection.cursor()
@@ -59,9 +65,11 @@ try:
     """, S = 'SYS%')
 except cx_Oracle.DatabaseError, info:
     print "SQL Error:", info
+    logger.error("SQL Error: %s", info)
     exit(0)
 
-print
+logger.info('Database: %s', my_connection.tnsentry)
+
 print 'Database:', my_connection.tnsentry
 print
 print "Used space by owner, object type, tablespace "
